@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::get('users', function () { return "fskdhfn"; })->name('users.index');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -19,9 +22,17 @@ Route::get('/admin/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified', 'check.role:admin'])->name('dashboard');
 
-Route::get('/user/dashboard', function () {
+Route::middleware(['auth', 'check.role:admin'])->group(function () {
+    Route::resource('users', UserController::class);
+});
+Route::get('/users', function () {
     return Inertia::render('User/DashboardUser');
-})->middleware(['auth', 'verified', 'check.role:user'])->name('dashboard_user');
+})->name('users.index')->middleware(['auth', 'verified', 'check.role:user']);
+
+Route::get('/user/dashboard', function () {
+    return Inertia::render('Contact/Index');
+})->middleware(['auth', 'verified', 'check.role:user'])->name('contact_user');
+
 
 
 // Route::get('/test', function () {
