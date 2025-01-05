@@ -37,7 +37,7 @@ export default function DashboardUser({ users }) {
                            <ul className="list-disc pl-5 space-y-2">
                                 <li>
                                     <Link
-                                        href={route('dashboard_user')}
+                                        href={route('contact_user')}
                                         className="text-blue-500 hover:underline"
                                     >
                                         Manage Users (Index)
@@ -53,7 +53,7 @@ export default function DashboardUser({ users }) {
                                 </li> */}
                                 <li>
                                     <Link
-                                        href={route('dashboard_user')}
+                                        href={route('contact_user')}
                                         className="text-blue-500 hover:underline"
                                     >
                                         User Dashboard

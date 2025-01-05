@@ -21,7 +21,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Contact/Create');
     }
 
     /**
@@ -32,20 +32,13 @@ class ContactController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Contact $contact)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Contact $contact)
     {
-        //
+        return Inertia::render('Contact/Edit');
     }
 
     /**
