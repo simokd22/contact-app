@@ -23,5 +23,6 @@ class CheckRole
 
         abort_if(!in_array(auth()->user()->role, $role), 403);
         return $next($request);
+        // ==============================
     }
 }

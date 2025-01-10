@@ -12,7 +12,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users = User::where('role', 'user')->paginate(10); // Fetch users with the role 'user'
+        $users = User::where('role', 'user')->get(); // Fetch users with the role 'user'
         return inertia('User/DashboardUser', [
             'users' => $users,
         ]);
@@ -58,17 +58,13 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
-    {
+    public function edit($id) {
+         $user = User::findOrFail($id);
+         return inertia('User/Edit',[
+             'user' => $user, ]);
 
-    if ($user->role !== 'user') {
-        abort(403, 'Unauthorized');
-    }
-    return inertia('User/Edit', [
-        'user' => $user,
-    ]);
-        //
-    }
+        }
+
 
     /**
      * Update the specified resource in storage.
@@ -90,12 +86,12 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
-    {
-
+    public function destroy($id)
+{
+    $user = User::findOrFail($id);
     $user->delete();
 
     return redirect()->route('users.index')->with('success', 'User deleted successfully.');
-        //
-    }
+}
+
 }

@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import DashboardUser from './User/DashboardUser';
+import { Link } from '@inertiajs/react';
 
 export default function Dashboard() {
     return (
@@ -22,13 +22,14 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Render DashboardUser Component */}
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6">
-                            <h3 className="mb-4 text-lg font-semibold">
-                                Normal User Dashboard
-                            </h3>
-                            <DashboardUser />
+                    {/* Button to redirect to /users */}
+                    <div className="mb-6 overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                        <div className="p-6 text-gray-900">
+                            <Link href="/users">
+                                <button className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600">
+                                    Manage Users
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

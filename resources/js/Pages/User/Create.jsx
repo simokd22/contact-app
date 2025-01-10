@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 
 const Create = () => {
-    const { data, setData, post, errors } = useForm({
+    const {  data,setData, post, errors } = useForm({
         name: '',
         email: '',
         password: '',
+        password_confirmation: '{password}',
         role: 'user',
     });
 
@@ -45,6 +46,12 @@ const Create = () => {
                     />
                     {errors.password && <div>{errors.password}</div>}
                 </div>
+                <div> <label htmlFor="password_confirmation">Confirm Password:</label>
+                 <input type="password" id="password_confirmation" name="password_confirmation"
+                 value={data.password_confirmation}
+                 />
+                  {errors.password_confirmation && <p className="error">{errors.password_confirmation}</p>}
+                  </div>
                 <div>
                     <label>Role</label>
                     <select

@@ -1,110 +1,102 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
 
-const ContactForm = () => {
-    const { id } = useParams(); // Get the contact ID from the route parameter
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        category: '',
-    });
+const ContactForm = ({ initialData, onSubmit }) => {
+    const [formData, setFormData] = useState(initialData || {});
 
-    const [loading, setLoading] = useState(false); // Optional: Loading state
-
-    // Fetch the contact data when editing
     useEffect(() => {
-        if (id) {
-            setLoading(true);
-            axios
-                .get(`/contacts/${id}`)
-                .then((response) => {
-                    setFormData(response.data); // Populate the form with the existing data
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    console.error('Error fetching contact:', error);
-                    setLoading(false);
-                });
-        }
-    }, [id]);
+        setFormData(initialData || {}); // Update formData whenever initialData changes
+    }, [initialData]);
 
-    const handleChange = (e) => {
+    const [errors, setErrors] = useState({});
+
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const apiCall = id
-            ? axios.put(`/contacts/${id}`, formData) // Update existing contact
-            : axios.post('/contacts', formData); // Create new contact
-
-        apiCall
-            .then(() => navigate('/')) // Redirect to contact list on success
-            .catch((error) => console.error('Error saving contact:', error));
+        onSubmit(formData, setErrors); // Pass data back to parent component
     };
 
-    if (loading) return <p>Loading contact data...</p>; // Optional: Display a loading state
-
     return (
-        <div className="container p-4 mx-auto">
-            <h1 className="mb-4 text-2xl font-bold">
-                {id ? 'Edit Contact' : 'Add Contact'}
-            </h1>
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label className="block mb-2">Name:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block mb-2">Email:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block mb-2">Phone:</label>
-                    <input
-                        type="text"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded"
-                    />
-                </div>
-                <div>
-                    <label className="block mb-2">Category:</label>
-                    <input
-                        type="text"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded"
-                    />
-                </div>
+        <form onSubmit={handleSubmit}>
+            {/* Name Field */}
+            <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    Name:
+                </label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name || ""}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded-md"
+                />
+                {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+            </div>
+
+            {/* Email Field */}
+            <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email:
+                </label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email || ""}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded-md"
+                />
+                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+            </div>
+
+            {/* Phone Field */}
+            <div className="mb-4">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                    Phone:
+                </label>
+                <input
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone || ""}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded-md"
+                />
+                {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
+            </div>
+
+            {/* Category Field */}
+            <div className="mb-4">
+                <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+                    Category:
+                </label>
+                <input
+                    type="text"
+                    id="category"
+                    name="category"
+                    value={formData.category || ""}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded-md"
+                />
+                {errors.category && (
+                    <p className="mt-1 text-sm text-red-600">{errors.category}</p>
+                )}
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-end">
                 <button
                     type="submit"
-                    className="px-4 py-2 text-white bg-blue-500 rounded"
+                    className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
                 >
-                    {id ? 'Update Contact' : 'Add Contact'}
+                    Save Contact
                 </button>
-            </form>
-        </div>
+            </div>
+        </form>
     );
 };
 

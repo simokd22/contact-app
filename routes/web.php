@@ -16,19 +16,21 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/admin/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified', 'check.role:admin'])->name('dashboard');
-
-
 //  Manage users CRUD ===============
 Route::middleware(['auth', 'check.role:admin'])->group(function () {
-    // Route::get('/admin/dashboard', function () { 
+    // Route::get('/admin/dashboard', function () {
     //     return Inertia::render('Dashboard');
     // })->name('dashbaord');
 
     Route::resource('users', UserController::class);
 });
+
+Route::get('/admin/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified', 'check.role:admin'])->name('dashboard');
+
+
+
 //  ==================================
 
 
