@@ -25,8 +25,8 @@ export default function AuthenticatedLayout({ header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
+                                    href={user.role === "admin" ? route('dashboard') : route('contact_user')}
+                                    // active={route().current('dashboard')}
                                 >
                                     Dashboard
                                 </NavLink>
